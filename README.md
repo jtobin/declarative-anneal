@@ -21,7 +21,7 @@ annealed to a specified temperature.
 annealingTransition = do
   anneal 0.70 (metropolis 1)
   anneal 0.05 (metropolis 1)
-  anneal 0.05 (bernoulliT 0.75 (metropolis 1) (hamiltonian 0.5 20))
+  anneal 0.05 (metropolis 1)
   anneal 0.70 (metropolis 1)
   metropolis 1
 ```
