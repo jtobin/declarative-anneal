@@ -34,5 +34,5 @@ main = withSystemRandom . asGenIO $
   mcmc 10000 [0, 0] annealingTransition himmelblau
 ```
 
-![trace](https://dl.dropboxusercontent.com/spa/u0s6617yxinm2ca/o8gyycqo.png)
+![trace](https://dl.dropboxusercontent.com/spa/u0s6617yxinm2ca/r0kwdm-z.png)
 
