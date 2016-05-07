@@ -1,10 +1,10 @@
 {-# OPTIONS_GHC -fno-warn-type-defaults #-}
-{-# LANGUAGE NoMonomorphismRestriction #-}
 
 module Main where
 
-import Numeric.MCMC.Metropolis (Target(..), Transition, Chain(..), metropolis)
-import Numeric.MCMC.Anneal (PrimMonad, anneal)
+import Control.Monad.Primitive (PrimMonad)
+import Numeric.MCMC
+import Numeric.MCMC.Anneal (anneal)
 
 himmelblau :: Target [Double]
 himmelblau = Target lHimmelblau (Just glHimmelblau) where
@@ -28,6 +28,11 @@ annealingTransition = do
   anneal 0.05 (metropolis 1)
   anneal 0.05 (metropolis 1)
   anneal 0.70 (metropolis 1)
+  metropolis 1
 
 main :: IO ()
-main = putStrLn "hi"
+main = withSystemRandom . asGenIO $
+  -- mcmc 50000 [0.5, 0.5] (metropolis 1) himmelblau
+  -- mcmc 10000 [0, 0] annealingTransition himmelblau
+  mcmc 20 [0, 0] annealingTransition himmelblau
+
