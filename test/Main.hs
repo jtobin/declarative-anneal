@@ -20,19 +20,14 @@ himmelblau = Target lHimmelblau (Just glHimmelblau) where
         dy = (-2) * (quadFactor0 + 2 * quadFactor1 * y)
     in  [dx, dy]
 
-annealingTransition
-  :: (PrimMonad m, Traversable f)
-  => Transition m (Chain (f Double) b)
 annealingTransition = do
   anneal 0.70 (metropolis 1)
   anneal 0.05 (metropolis 1)
-  anneal 0.05 (metropolis 1)
+  anneal 0.05 (bernoulliT 0.75 (metropolis 1) (hamiltonian 0.5 20))
   anneal 0.70 (metropolis 1)
   metropolis 1
 
 main :: IO ()
 main = withSystemRandom . asGenIO $
-  -- mcmc 50000 [0.5, 0.5] (metropolis 1) himmelblau
-  -- mcmc 10000 [0, 0] annealingTransition himmelblau
   mcmc 20 [0, 0] annealingTransition himmelblau
 
