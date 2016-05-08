@@ -18,6 +18,9 @@ This library exports a single `anneal` function that allows one to run a
 annealed to a specified temperature.
 
 ``` haskell
+import Numeric.MCMC
+import Numeric.MCMC.Anneal (anneal)
+
 annealingTransition = do
   anneal 0.70 (metropolis 1)
   anneal 0.05 (metropolis 1)
@@ -29,6 +32,12 @@ annealingTransition = do
 These 'annealed' operators can then just be used like any other:
 
 ``` haskell
+himmelblau :: Target [Double]
+himmelblau = Target lHimmelblau Nothing where
+  lHimmelblau :: [Double] -> Double
+  lHimmelblau [x0, x1] =
+    (-1) * ((x0 * x0 + x1 - 11) ^ 2 + (x0 + x1 * x1 - 7) ^ 2)
+
 main :: IO ()
 main = withSystemRandom . asGenIO $
   mcmc 10000 [0, 0] annealingTransition himmelblau

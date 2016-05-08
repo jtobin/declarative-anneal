@@ -1,6 +1,6 @@
 name:                declarative-anneal
-version:             0.1.0.0
-synopsis:            An annealing transformer for Markov transition operators.
+version:             0.1.0
+synopsis:            An annealing transformer for transition operators.
 homepage:            http://github.com/jtobin/declarative-anneal
 license:             MIT
 license-file:        LICENSE
@@ -11,6 +11,34 @@ build-type:          Simple
 cabal-version:       >=1.10
 description:
   An annealing transformer for Markov transition operators.
+  .
+  Transition operators can easily be tweaked to operate over an /annealed/
+  parameter space, which can be useful when sampling from bumpy landscapes with
+  isolated modes.
+  .
+  This library exports a single `anneal` function that allows one to run a
+  <http://github.com/jtobin/declarative declarative>-compatible transition
+  operator over a space that has been annealed to a specified temperature.
+  .
+  > import Numeric.MCMC
+  > import Numeric.MCMC.Anneal (anneal)
+  >
+  > annealingTransition = do
+  >   anneal 0.70 (metropolis 1)
+  >   anneal 0.05 (metropolis 1)
+  >   anneal 0.05 (metropolis 1)
+  >   anneal 0.70 (metropolis 1)
+  >   metropolis 1
+  >
+  > himmelblau :: Target [Double]
+  > himmelblau = Target lHimmelblau Nothing where
+  >   lHimmelblau :: [Double] -> Double
+  >   lHimmelblau [x0, x1] =
+  >     (-1) * ((x0 * x0 + x1 - 11) ^ 2 + (x0 + x1 * x1 - 7) ^ 2)
+  >
+  > main :: IO ()
+  > main = withSystemRandom . asGenIO $
+  >   mcmc 10000 [0, 0] annealingTransition himmelblau
 
 library
   default-language:  Haskell2010
@@ -21,21 +49,7 @@ library
     Numeric.MCMC.Anneal
   build-depends:
       base              <  5
-    , declarative
     , mcmc-types        >= 1.0.1
     , primitive
     , transformers
-
-Test-suite himmelblau
-  type:                exitcode-stdio-1.0
-  hs-source-dirs:      test
-  main-is:             Main.hs
-  default-language:    Haskell2010
-  ghc-options:
-    -rtsopts
-  build-depends:
-      base               < 5
-    , declarative
-    , declarative-anneal
-    , primitive
 
