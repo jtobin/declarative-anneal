@@ -3,8 +3,9 @@
 [![Build Status](https://secure.travis-ci.org/jtobin/declarative-anneal.png)](http://travis-ci.org/jtobin/declarative-anneal)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jtobin/declarative-anneal/blob/master/LICENSE)
 
-A simple 'annealing transformer' for
-[declarative](https://github.com/jtobin/declarative)-compatible transition
+## (deprecated - this annealing transformer has been moved into [declarative][decl])
+
+A simple 'annealing transformer' for [declarative][decl]-compatible transition
 operators.
 
 ## Summary
@@ -44,4 +45,4 @@ main = withSystemRandom . asGenIO $
 ```
 
 ![trace](https://dl.dropboxusercontent.com/spa/u0s6617yxinm2ca/r0kwdm-z.png)
-
+[decl]: https://github.com/jtobin/declarative
